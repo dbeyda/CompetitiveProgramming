@@ -13,20 +13,37 @@ using namespace std;
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
+    int n; cin >> n;
+    string s; cin >> s;
+    if (n == 1)
     {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
+        cout << "YES\n0\n";
+        return;
     }
-    spent += n;
-    cout << spent << '\n';
+
+    string ans;
+    ans.resize(n);
+    char lastC1='a';
+    char lastC2='a';
+    for(int i=0; i<n; ++i)
+    {
+        if (s[i] >= lastC1)
+        {
+            lastC1 = s[i];
+            ans[i] = '0';
+        }
+        else if(s[i] >= lastC2)
+        {
+            lastC2 = s[i];
+            ans[i] = '1';
+        }
+        else
+        {
+            cout << "NO\n";
+            return;
+        }
+    }
+    cout << "YES\n" << ans << '\n';
 }
 
 int main()
@@ -38,7 +55,7 @@ int main()
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 
     long long t=1;
-    cin >> t;
+    // cin >> t;
     for(int it=1; it<=t; it++)
         solve();
     return 0;

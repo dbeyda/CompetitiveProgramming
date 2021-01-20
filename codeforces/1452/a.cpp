@@ -13,20 +13,11 @@ using namespace std;
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
-    {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
-    }
-    spent += n;
-    cout << spent << '\n';
+    int x, y;
+    cin >> x >> y;
+
+    int dif = max(abs(x), abs(y)) - min(abs(x), abs(y));
+    cout << (min(abs(x), abs(y)) + dif)*2 - (dif > 0 ? 1 : 0) << endl;
 }
 
 int main()

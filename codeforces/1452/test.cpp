@@ -10,23 +10,16 @@ double eps = 1e-12;
 
 using namespace std;
 
+void rec(long long n)
+{
+    if (n <= 0) return;
+    cout << n << '\n';
+    rec(--n);
+}
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
-    {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
-    }
-    spent += n;
-    cout << spent << '\n';
+    rec(200000);
 }
 
 int main()
@@ -38,7 +31,7 @@ int main()
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 
     long long t=1;
-    cin >> t;
+    // cin >> t;
     for(int it=1; it<=t; it++)
         solve();
     return 0;

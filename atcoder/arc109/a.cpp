@@ -13,20 +13,21 @@ using namespace std;
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
+    int a, b, x, y;
+    cin >> a >> b >> x >> y;
+
+    if(a == b)
     {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
+        cout << x;
+        return;
     }
-    spent += n;
-    cout << spent << '\n';
+    
+    int floors = abs(a-b);
+    int baseCost = (floors-1) * min(2*x, y);
+    // now we just have to go 1 floor up/down
+    int cost = x + y;
+    cost = min(cost, (b-a > 0 ? 3*x : x));
+    cout << baseCost + cost << endl;
 }
 
 int main()
@@ -38,7 +39,7 @@ int main()
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 
     long long t=1;
-    cin >> t;
+    // cin >> t;
     for(int it=1; it<=t; it++)
         solve();
     return 0;

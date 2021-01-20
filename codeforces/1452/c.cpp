@@ -10,23 +10,37 @@ double eps = 1e-12;
 
 using namespace std;
 
+long long mod = 998244353;
+
+
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
+    string s;
+    cin >> s;
+
+    int open1 = 0;
+    int open2 = 0;
+    int moves = 0;
+
+    for(auto& c : s)
     {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
+        if (c == '(')
+            ++open1;
+        else if (c == '[')
+            ++open2;
+        else if (c == ')' && open1)
+        {
+            --open1;
+            ++moves;
+        }
+        else if (c == ']' && open2)
+        {
+            --open2;
+            ++moves;
+        }
     }
-    spent += n;
-    cout << spent << '\n';
+    cout << moves << '\n';
 }
 
 int main()

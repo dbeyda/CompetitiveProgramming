@@ -13,20 +13,13 @@ using namespace std;
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
-    {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
-    }
-    spent += n;
-    cout << spent << '\n';
+    long long dest; cin >> dest;
+    long long steps = 0;
+    while (steps * (steps+1) < 2*dest)
+        ++steps;
+    
+    if(steps * (steps+1) == 2*(dest+1)) steps++;
+    cout << steps << '\n';
 }
 
 int main()

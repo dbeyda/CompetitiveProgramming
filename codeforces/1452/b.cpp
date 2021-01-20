@@ -13,20 +13,18 @@ using namespace std;
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
-    {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
-    }
-    spent += n;
-    cout << spent << '\n';
+    int nBoxes;
+    cin >> nBoxes;
+    vector<long long> boxes(nBoxes, 0);
+    for(auto& box : boxes) cin >> box;
+    
+    auto maxIt = max_element(boxes.begin(), boxes.end());
+    long long maxEl = *maxIt;
+    long long sum = std::accumulate(boxes.begin(), boxes.end(), 0.);
+
+    long long k = max(maxEl, (long long) ceil((double)sum / (nBoxes-1)));
+    
+    cout << k * (nBoxes-1) - sum << '\n';
 }
 
 int main()

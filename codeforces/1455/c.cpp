@@ -13,20 +13,26 @@ using namespace std;
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
+    int n, x;
+    cin >> n >> x;
+    vector<int> a(n);
+    for(auto& ai : a) cin >> ai;
+    
+    int transitions = 0;
+    for(int i=0; i<n; ++i)
     {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
+        if (a[i] > x)
+        {
+            swap(a[i], x);
+            ++transitions;
+        }
+        else if(i>0 && a[i-1] > a[i])
+        {
+            cout << -1 << '\n';
+            return;
+        }
     }
-    spent += n;
-    cout << spent << '\n';
+    cout << transitions << '\n';
 }
 
 int main()

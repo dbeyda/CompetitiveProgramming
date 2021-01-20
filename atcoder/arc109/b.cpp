@@ -13,20 +13,25 @@ using namespace std;
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
+    long long n;
+    cin >> n;
+
+    long long cost = n+1;
+    long long nextLogSize = 1;
+    long long myLog = n+1;
+    
+    // Improvement:
+    // this could be done with a binary search
+    // on a function that uses the formula of
+    // sum(1, n) = n*(1+n)/2, to find in O(log n)
+    // the number of logs.
+    while (nextLogSize <= myLog)
     {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
+        myLog -= nextLogSize;
+        cost--;
+        nextLogSize++;
     }
-    spent += n;
-    cout << spent << '\n';
+    cout << cost << endl;
 }
 
 int main()
@@ -38,7 +43,7 @@ int main()
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 
     long long t=1;
-    cin >> t;
+    // cin >> t;
     for(int it=1; it<=t; it++)
         solve();
     return 0;

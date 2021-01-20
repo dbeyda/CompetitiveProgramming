@@ -10,23 +10,33 @@ double eps = 1e-12;
 
 using namespace std;
 
+char rps(char first, char second)
+{
+    if (first == second) return first;
+    if (first == 'R')
+        return (second == 'P' ? 'P' : 'R');
+    if (first == 'P')
+        return (second == 'S' ? 'S' : 'P');
+    if (first == 'S')
+        return (second == 'R' ? 'R' : 'S');
+    cout << "Error on rps(" << first << ", " << second << ")\n";
+    exit(1);
+}
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
+    int n, k;
+    string s;
+    cin >> n >> k >> s;
+
+    string t;
+    while(k--)
     {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
+        t = s + s;
+        for(int i=0; i<n; ++i)
+            s[i] = rps((char) t[2*i], (char) t[2*i + 1]);
     }
-    spent += n;
-    cout << spent << '\n';
+    cout << s[0] << '\n';
 }
 
 int main()
@@ -38,7 +48,7 @@ int main()
     ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 
     long long t=1;
-    cin >> t;
+    // cin >> t;
     for(int it=1; it<=t; it++)
         solve();
     return 0;

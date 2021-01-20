@@ -13,20 +13,20 @@ using namespace std;
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
+    int n, k;
+    cin >> n >> k;
+    vector<long long> v(n*k);
+    for(auto& vi : v) cin >> vi;
+    int it = 0;
+    int pos = n*k;
+    long long sum = 0;
+    while(it < k)
     {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
+        pos -= (n/2 + 1);
+        sum += v[pos];
+        ++it;
     }
-    spent += n;
-    cout << spent << '\n';
+    cout << sum << '\n';
 }
 
 int main()

@@ -13,20 +13,26 @@ using namespace std;
 
 void solve()
 {
-    long long n; cin >> n;
-    long long spent = 0;
-    long long aux;
-    while(n >= 10)
+    int n, c0, c1, h;
+    cin >> n >> c0 >> c1 >> h;
+    string s;
+    cin >> s;
+    int cost = 0;
+
+    char cheaper = c0 < c1 ? '0' : '1';
+    int cheaperCost = min(c0, c1);
+    int otherCost = max(c0, c1);
+    int costDiff = abs(c0-c1);
+
+    for(auto& si : s)
     {
-        // lets spend aux
-        aux = (n/10)*10;
-        spent += aux;
-        n -= aux;
-        // receive cashback
-        n += aux/10;
+        if(si != cheaper && costDiff > h)
+            cost += h + cheaperCost;
+        else if (si == cheaper)
+            cost += cheaperCost;
+        else cost += otherCost;
     }
-    spent += n;
-    cout << spent << '\n';
+    cout << cost << '\n';
 }
 
 int main()
