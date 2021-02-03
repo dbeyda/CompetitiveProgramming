@@ -14,19 +14,28 @@ using namespace std;
 void solve()
 {
     int n; cin >> n;
-    vector<long long> p(n);
-    for(auto& pi : p) cin >> pi;
-    long long sum = accumulate(p.begin(), p.end(), 0ll, [](long long a, long long b) {return a + b;});
-    long long best = sum;
+    vector<long long> v(n);
+    for(auto& vi : v) cin >> vi;
 
-    for(int i=0; i < (1 << n); ++i)
+    int maxLen = 0;
+    int currStart = 0;
+    map<long long, int> lastSeen;
+    for(int i=0; i<n; ++i)
     {
-        long long current = 0;
-        for(int j=0; j<n; ++j)
-            if(i & (1 << j)) current += p[j];
-        best = min(best, abs(sum-2*current));
+        auto last = lastSeen.find(v[i]);
+        if(last == lastSeen.end())
+            maxLen = max(maxLen, i - currStart + 1);
+        else
+        {
+            int lastPos = last->second;
+            for(int j=currStart; j<=lastPos; ++j)
+                lastSeen.erase(v[j]);
+            currStart = lastPos+1;
+        }
+        lastSeen[v[i]] = i;
     }
-    cout << best;
+
+    cout << maxLen << endl;
 }
 
 int main()

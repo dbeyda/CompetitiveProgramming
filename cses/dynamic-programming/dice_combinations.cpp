@@ -7,6 +7,7 @@
 #include <iostream>
 
 double eps = 1e-12;
+long long mod = 1e9 + 7;
 
 using namespace std;
 
@@ -14,19 +15,15 @@ using namespace std;
 void solve()
 {
     int n; cin >> n;
-    vector<long long> p(n);
-    for(auto& pi : p) cin >> pi;
-    long long sum = accumulate(p.begin(), p.end(), 0ll, [](long long a, long long b) {return a + b;});
-    long long best = sum;
-
-    for(int i=0; i < (1 << n); ++i)
-    {
-        long long current = 0;
-        for(int j=0; j<n; ++j)
-            if(i & (1 << j)) current += p[j];
-        best = min(best, abs(sum-2*current));
-    }
-    cout << best;
+    vector<long long> dp(n+1, 0);
+    dp[0] = 1;
+    
+    for(int i=1; i<=n; ++i)
+        for(int d=1; d<=6; ++d)
+            if(i-d >= 0)
+                dp[i] = ((dp[i] % mod) + (dp[i-d] % mod) ) % mod;
+    
+    cout << dp[n] << endl;
 }
 
 int main()

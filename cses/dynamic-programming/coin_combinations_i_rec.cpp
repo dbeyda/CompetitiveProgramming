@@ -8,26 +8,37 @@
 
 double eps = 1e-12;
 
+long long mod = 1e9 + 7;
+
 using namespace std;
+
+
+long long ways(int x, vector<int>& coins, vector<long long>& cache)
+{
+    if(x < 0) return 0;
+    if(cache[x] >= 0) return cache[x];
+    
+    long long ans = 0;
+    for(auto& c : coins)
+        ans = (ans + ways(x-c, coins, cache)) % mod;
+    cache[x] = ans;
+    return ans;
+}
 
 
 void solve()
 {
-    int n; cin >> n;
-    vector<long long> p(n);
-    for(auto& pi : p) cin >> pi;
-    long long sum = accumulate(p.begin(), p.end(), 0ll, [](long long a, long long b) {return a + b;});
-    long long best = sum;
+    int n, x;
+    cin >> n >> x;
+    vector<int> coins(n);
+    for(auto& c : coins) cin >> c;
+    sort(coins.rbegin(), coins.rend());
+    vector<long long> cache(x+1, -1);
+    cache[0] = 1ll;
 
-    for(int i=0; i < (1 << n); ++i)
-    {
-        long long current = 0;
-        for(int j=0; j<n; ++j)
-            if(i & (1 << j)) current += p[j];
-        best = min(best, abs(sum-2*current));
-    }
-    cout << best;
+    cout << ways(x, coins, cache) << endl;
 }
+
 
 int main()
 {

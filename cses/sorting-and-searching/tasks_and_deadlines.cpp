@@ -14,21 +14,20 @@ using namespace std;
 void solve()
 {
     int n; cin >> n;
-    vector<long long> p(n);
-    long long sum = 0;
-    for(auto& pi : p)
-    {
-        cin >> pi;
-        sum += pi;
-    }
-    sort(p.rbegin(), p.rend()); // decrescent sorting
+    vector<pair<int, int>> tasks(n); // pair<duration, deadline>
+    for(auto& t : tasks) cin >> t.first >> t.second;
 
-    long long sum1 = 0;
-    for(auto& pi : p)
-        if(sum1 + pi <= sum/2)
-            sum1 += pi;
-    long long sum2 = sum - sum1;
-    cout << abs(sum1 - sum2);
+    sort(tasks.begin(), tasks.end(),
+        [] (auto a, auto b) { return a.first < b.first; });
+    
+    long long reward = 0ll;
+    long long currTime = 0ll;
+    for(auto& t : tasks)
+    {
+        reward += t.second - (currTime + t.first);
+        currTime += t.first;
+    }
+    cout << reward << endl;
 }
 
 int main()

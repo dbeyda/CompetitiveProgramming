@@ -13,20 +13,25 @@ using namespace std;
 
 void solve()
 {
-    int n; cin >> n;
-    vector<long long> p(n);
-    for(auto& pi : p) cin >> pi;
-    long long sum = accumulate(p.begin(), p.end(), 0ll, [](long long a, long long b) {return a + b;});
-    long long best = sum;
+    long long n; cin >> n;
+    vector<int> dp(n+1, -1);
 
-    for(int i=0; i < (1 << n); ++i)
+    dp[n] = 0;
+    for(int i=n; i>=0; --i)
     {
-        long long current = 0;
-        for(int j=0; j<n; ++j)
-            if(i & (1 << j)) current += p[j];
-        best = min(best, abs(sum-2*current));
+        int j = i;
+        do {
+            int digit = j % 10;
+            if(dp[i] >= 0)
+            {
+                if(dp[i-digit] >= 0) dp[i-digit] = min(dp[i-digit], dp[i]+1);
+                else dp[i-digit] = dp[i]+1;
+            }
+        } while ( j /= 10);
     }
-    cout << best;
+    cout << dp[0] << endl;
+    // for(auto& vi : dp) cout << vi << " ";
+    // cout << endl;
 }
 
 int main()

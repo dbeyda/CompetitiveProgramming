@@ -13,20 +13,24 @@ using namespace std;
 
 void solve()
 {
-    int n; cin >> n;
-    vector<long long> p(n);
-    for(auto& pi : p) cin >> pi;
-    long long sum = accumulate(p.begin(), p.end(), 0ll, [](long long a, long long b) {return a + b;});
-    long long best = sum;
+    int n; long long x;
+    cin >> n >> x;
 
-    for(int i=0; i < (1 << n); ++i)
-    {
-        long long current = 0;
-        for(int j=0; j<n; ++j)
-            if(i & (1 << j)) current += p[j];
-        best = min(best, abs(sum-2*current));
-    }
-    cout << best;
+    vector<long long> v(n);
+    for(auto& vi : v) cin >> vi;
+
+    map<long long, int> m;
+    for(int i=0; i<v.size(); ++i) m[x-v[i]] = i;
+
+    for(int i=0; i<v.size()-1; ++i)
+        for(int j=i+1; j<v.size(); ++j)
+            if(m.count(v[i]+v[j]) && m[v[i]+v[j]] != i && m[v[i]+v[j]] != j)
+            {
+                cout << i+1 << ' ' << j+1 << ' ' << m[v[i]+v[j]]+1 << endl;
+                return;
+            }
+    cout << "IMPOSSIBLE" << endl;
+
 }
 
 int main()

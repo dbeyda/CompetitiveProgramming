@@ -8,26 +8,36 @@
 
 double eps = 1e-12;
 
+
 using namespace std;
 
 
 void solve()
 {
-    int n; cin >> n;
-    vector<long long> p(n);
-    for(auto& pi : p) cin >> pi;
-    long long sum = accumulate(p.begin(), p.end(), 0ll, [](long long a, long long b) {return a + b;});
-    long long best = sum;
+    long long mod = 1e9 + 7;
+    int n, x;
+    cin >> n >> x;
+    vector<int> coins(n);
+    for(auto& c : coins) cin >> c;
 
-    for(int i=0; i < (1 << n); ++i)
+    // vector<long long> dp(x+1, 0);
+    int dp[x+1];
+
+    dp[0] = 1ll;
+
+    for(int i=1; i<=x; ++i)
     {
-        long long current = 0;
-        for(int j=0; j<n; ++j)
-            if(i & (1 << j)) current += p[j];
-        best = min(best, abs(sum-2*current));
+        dp[i] = 0ll;
+        for(auto& c : coins)
+            if(i-c >= 0)
+            {
+                dp[i] += dp[i-c];
+                dp[i] %= mod;
+            }
     }
-    cout << best;
+    cout << dp[x] << endl;
 }
+
 
 int main()
 {

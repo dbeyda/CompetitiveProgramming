@@ -14,19 +14,33 @@ using namespace std;
 void solve()
 {
     int n; cin >> n;
-    vector<long long> p(n);
-    for(auto& pi : p) cin >> pi;
-    long long sum = accumulate(p.begin(), p.end(), 0ll, [](long long a, long long b) {return a + b;});
-    long long best = sum;
+    vector<long long> v(n);
+    for(auto& vi : v) cin >> vi;
 
-    for(int i=0; i < (1 << n); ++i)
+    vector<long long> seq;
+    for(auto& vi : v)
     {
-        long long current = 0;
-        for(int j=0; j<n; ++j)
-            if(i & (1 << j)) current += p[j];
-        best = min(best, abs(sum-2*current));
+        if(seq.size() == 0)
+        {
+            seq.push_back(vi);
+            continue;
+        }
+
+        // find best seq
+        int bestSeqIdx = -1;
+        for(int i=0; i<seq.size(); ++i)
+            if(seq[i] < vi)
+            {
+                if (bestSeqIdx == -1) bestSeqIdx = i;
+                else if(seq[i] > seq[bestSeqIdx]) bestSeqIdx = i;
+            }
+        
+        // insert into seq
+        if(bestSeqIdx == -1) seq.push_back(vi);
+        else seq[bestSeqIdx] = vi;
     }
-    cout << best;
+
+    cout << seq.size();
 }
 
 int main()

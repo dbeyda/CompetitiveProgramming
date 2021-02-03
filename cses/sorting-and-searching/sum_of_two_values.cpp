@@ -14,19 +14,21 @@ using namespace std;
 void solve()
 {
     int n; cin >> n;
-    vector<long long> p(n);
-    for(auto& pi : p) cin >> pi;
-    long long sum = accumulate(p.begin(), p.end(), 0ll, [](long long a, long long b) {return a + b;});
-    long long best = sum;
-
-    for(int i=0; i < (1 << n); ++i)
+    long long x; cin >> x;
+    vector<long long> v(n);
+    map<long long, int> m;
+    for(int i=0; i<n; ++i)
     {
-        long long current = 0;
-        for(int j=0; j<n; ++j)
-            if(i & (1 << j)) current += p[j];
-        best = min(best, abs(sum-2*current));
+        cin >> v[i];
+        auto it = m.find(v[i]);
+        if (it != m.end())
+        {
+            cout << it->second+1 << " " << i+1 << endl;
+            return;
+        }
+        else m[x-v[i]] = i;
     }
-    cout << best;
+    cout << "IMPOSSIBLE\n";
 }
 
 int main()

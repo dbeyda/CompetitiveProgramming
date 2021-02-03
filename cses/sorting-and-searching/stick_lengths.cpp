@@ -14,19 +14,18 @@ using namespace std;
 void solve()
 {
     int n; cin >> n;
-    vector<long long> p(n);
-    for(auto& pi : p) cin >> pi;
-    long long sum = accumulate(p.begin(), p.end(), 0ll, [](long long a, long long b) {return a + b;});
-    long long best = sum;
-
-    for(int i=0; i < (1 << n); ++i)
-    {
-        long long current = 0;
-        for(int j=0; j<n; ++j)
-            if(i & (1 << j)) current += p[j];
-        best = min(best, abs(sum-2*current));
-    }
-    cout << best;
+    vector<long long> l(n);
+    for(auto& li : l) cin >> li;
+    
+    sort(l.begin(), l.end());
+    long long target;
+    if (l.size() % 2) target = l[l.size()/2];
+    else
+        target = (l[l.size()/2] + l[l.size()/2 - 1] ) / 2;
+    
+    long long cost = accumulate(l.begin(), l.end(), 0ll, 
+        [target] (long long a, long long b) -> long long { return a + abs(b-target); });
+    cout << cost << endl;
 }
 
 int main()
