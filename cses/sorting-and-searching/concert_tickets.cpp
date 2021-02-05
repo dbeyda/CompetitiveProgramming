@@ -15,33 +15,49 @@ bool decreasing_compare (const long long &first, const long long &second)
   return first > second;
 }
 
+// changing to multiset<long long, greater<long long>> would make this much smaller.
 void solve()
 {
     int nTickets, nCust;
     cin >> nTickets >> nCust;
-    list<long long> tickets;
+    multiset<long long> tickets;
     long long input;
     for(int i=0; i<nTickets; ++i)
     {
         cin >> input;
-        tickets.push_back(input);
+        tickets.insert(input);
     }
-    tickets.sort(decreasing_compare);
-    
 
     for(int i=0; i<nCust; ++i)
     {
         cin >> input;
+
+        // cout << "-------\nCust " << input << endl;
+        
+        auto it = tickets.lower_bound(input);
+        auto rev = make_reverse_iterator(it);
+        if(rev != tickets.rbegin()) --rev;
+        // multiset<long long>::reverse_iterator rev;
+        // if (it == tickets.end()) rev = tickets.rbegin();
+        // else rev = make_reverse_iterator(it);
+        
+        // cout << "it " << *it << endl;
+        // cout << "rev " << *rev << endl;
+
+
         bool found = false;
-        for(auto it = tickets.begin(); it != tickets.end(); ++it)
+        while(rev != tickets.rend())
         {
-            if(*it <= input)
+            if(*rev <= input)
             {
+                cout << *rev << endl;
+                auto toRemove = rev;
+                ++rev;
+                tickets.erase(--toRemove.base());
                 found = true;
-                cout << *it << '\n';
-                tickets.erase(it);
                 break;
             }
+            else ++rev;
         }
         if(!found) cout << "-1\n";
     }
