@@ -8,37 +8,30 @@
 
 double eps = 1e-12;
 
-
 using namespace std;
 
 
 void solve()
 {
-    int mod = 1e9 + 7;
-    int n, x;
-    cin >> n >> x;
-    vector<int> coins(n);
-    for(auto& c : coins) cin >> c;
-
-    // vector<long long> dp(x+1, 0);
-    int dp[x+1];
-    memset(dp, 0, sizeof(int) * (x+1));
-    dp[0] = 1;
-
-    for(auto& c : coins)
-    {
-        for(int i=1; i<=x; ++i)
-            if(i-c >= 0)
+    int a, b;
+    cin >> a >> b;
+    int dp[a][b];
+    for(int i=0; i<a; ++i)
+        for(int j=0; j<b; ++j)
+        {
+            if(i == j) dp[i][j] = 0;
+            else
             {
-                dp[i] += dp[i-c];
-                dp[i] %= mod;
+                int minimum = INT_MAX;
+                for(int ii=0; ii<i; ++ii)
+                    minimum = min(minimum, dp[ii][j] + dp[i-ii-1][j] + 1);
+                for(int jj=0; jj<j; ++jj)
+                    minimum = min(minimum, dp[i][jj] + dp[i][j-jj-1] + 1);
+                dp[i][j] = minimum;
             }
-    }
-    cout << dp[x] << endl;
-    // for(auto& v : dp) cout << v << " ";
-    // cout << endl;
+        }
+    cout << dp[a-1][b-1] << endl;
 }
-
 
 int main()
 {
