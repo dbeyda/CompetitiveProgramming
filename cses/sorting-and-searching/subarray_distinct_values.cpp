@@ -1,3 +1,6 @@
+// IMPORTANT
+// the subarray has to be contiguous
+
 #pragma GCC optimize("Ofast")
 #pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,fma")
 #pragma GCC optimize("unroll-loops")
@@ -6,15 +9,13 @@
 #include <iomanip>
 #include <iostream>
 
-double eps = 1e-12;
-
 using namespace std;
 
 
-inline long long nSubarrays(int start, int end)
+long long getSubarrays(int start, int end)
 {
     long long n = end - start + 1;
-    return n + (n*(n-1ll))/2ll;
+    return (n * (n-1)) / 2 + n;
 }
 
 
@@ -26,41 +27,43 @@ void solve()
     vector<long long> v(n);
     for(auto& vi : v) cin >> vi;
 
-    map<long long, int> m;
-    long long ans = 0;
+    if(k == 1)
+    {
+        cout << n << endl;
+        return;
+    }
 
+    map<long long, int> freq;
+
+    long long ans = 0;
     int start = 0;
-    int end = 0;
+    int end = -1;
+    int oldEnd = -1;
     while(true)
     {
-        auto it = m.find(v[end]);
-        while(end < n && it == m.end())
+        // cout << "Loop\n";
+        oldEnd = end;
+        while((freq.count(v[end+1]) || (int) freq.size() < k) && end < n-1)
         {
-            m[v[end]] = end;
+            freq[v[end+1]]++;
             ++end;
-            it = m.find(v[end]);
         }
+        // cout << "end is at " << end << endl;
+        // add vectors to ans
+        ans += getSubarrays(start, end);
+        // cout << ans << endl;
+        if(start <= oldEnd) ans -= getSubarrays(start, oldEnd);
 
-        if(it != m.end())
+        while((int) freq.size() == k && start < end)
         {
-            // end is pointing at a duplicated value
-            // move end to element before duplicated value
-            --end;
-            int dupIndex = it->second;
-            ans += nSubarrays(start, end);
-            ans -= nSubarrays(dupIndex+1, end);
-            start = dupIndex+1;
-            end = start;
-            m.clear();
+            --freq[v[start]];
+            if(!freq[v[start]]) freq.erase(v[start]);
+            ++start;
         }
-        // reached end without duplicates
-        else
-        {
-            ans += nSubarrays(start, end);
-            break;
-        }
+        if(end == n-1) break;
     }
     cout << ans << endl;
+    // cout << "oi" << endl;
 }
 
 int main()

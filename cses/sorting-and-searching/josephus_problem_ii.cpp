@@ -10,7 +10,7 @@ double eps = 1e-12;
 
 using namespace std;
 
-list<int>::iterator removeAndGetNext(list<int>& children, list<int>::iterator it)
+list<int>::iterator removeAndGetNext(list<int>& children, list<int>::iterator it, int k)
 {
     if(children.size() == 2)
     {
@@ -19,22 +19,32 @@ list<int>::iterator removeAndGetNext(list<int>& children, list<int>::iterator it
     }
 
     auto toDelete = it;
-    it = next(it);
-    if(it == children.end()) it = children.begin();
-    it = next(it);
-    if(it == children.end()) it = children.begin();
+    if (k == 0)
+    {
+        it = children.erase(toDelete);
+        return it;        
+    }
+
+    while(k--)
+    {
+        it = next(it);
+        if(it == children.end()) it = children.begin();
+    }
     children.erase(toDelete);
     return it;
 }
 
+
 void solve()
 {
-    int n; cin >> n;
+    int n, k; cin >> n >> k;
     list<int> children;
     for(int i=1; i<=n; ++i)
         children.push_back(i);
 
-    auto nextChild = next(children.begin());
+
+    auto nextChild = children.begin();
+    advance(nextChild, k);
     while(!children.empty())
     {
         if(children.size() == 1)
@@ -43,7 +53,7 @@ void solve()
             break;
         }
         cout << *nextChild << " ";
-        nextChild = removeAndGetNext(children, nextChild);
+        nextChild = removeAndGetNext(children, nextChild, k);
     }
 }
 

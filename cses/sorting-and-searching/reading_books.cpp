@@ -10,23 +10,19 @@ double eps = 1e-12;
 
 using namespace std;
 
+
 void solve()
 {
     int n; cin >> n;
-    vector<int> positions(n+1, -1);
+    vector<long long> v(n);
+    for(auto& vi : v) cin >> vi;
 
-    int input;
-    for(int i=1; i<=n; ++i)
-    {
-        cin >> input;
-        positions[input] = i;
-    }
+    long long sum = accumulate(v.begin(), v.end(), 0ll, [] (auto a, auto b) { return a + b; });
+    long long maximum = accumulate(v.begin(), v.end(), 0ll, [] (auto a, auto b) { return max(a,b); });
 
-    int passes = 1;
-    for(int i=2; i<=n; ++i)
-        if(positions[i] < positions[i-1])
-            ++passes;
-    cout << passes << endl;
+    if(maximum > sum-maximum) cout << 2 * maximum;
+    else cout << sum;
+    cout << endl;
 }
 
 int main()
